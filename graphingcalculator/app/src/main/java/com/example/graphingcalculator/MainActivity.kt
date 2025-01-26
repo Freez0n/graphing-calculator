@@ -87,19 +87,24 @@ class MainActivity : Activity() {
         }
     }
 
-    private fun calculate(firstOperand: Double, secondOperand: Double, operator: String): Double {
-        return when (operator) {
-            "+" -> firstOperand + secondOperand
-            "-" -> firstOperand - secondOperand
-            "*" -> firstOperand * secondOperand
-            "/" -> {
-                if (secondOperand != 0.0) {
+    private fun calculate(firstOperand: Double, secondOperand: Double, operator: String): Double? {
+        return try {
+            when (operator) {
+                "+" -> firstOperand + secondOperand
+                "-" -> firstOperand - secondOperand
+                "*" -> firstOperand * secondOperand
+                "/" -> {
+                    if (secondOperand == 0.0) {
+                        throw ArithmeticException("Деление на ноль")
+                    }
                     firstOperand / secondOperand
-                } else {
-                    throw ArithmeticException("Деление на ноль")
                 }
+                else -> throw IllegalArgumentException("Неподдерживаемая операция")
             }
-            else -> throw IllegalArgumentException("Неподдерживаемая операция")
+        } catch (e: ArithmeticException) {
+            null
+        } catch (e: IllegalArgumentException) {
+            null
         }
     }
 }
